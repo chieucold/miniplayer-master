@@ -172,10 +172,9 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
                   ),
                 ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.bottomCenter,
                 child: SizedBox(
                   height: height,
-                  width: height * 16 / 9,
                   child: GestureDetector( 
                     child: ValueListenableBuilder(
                       valueListenable: dragDownPercentage,
@@ -238,36 +237,25 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
                       else if (speed <= 50) snapPercentage = 0.01;
                       PanelState snap = PanelState.MIN;
 
-                      if (widget.maxHeight - _dragHeight <= 200) {
-                        snap = PanelState.MAX;
-                        ///Snap to position
-                        _snapToPosition(snap);
-                        return;
-                      } else if (_dragHeight > 250 && _startHeight < 300) {
-                        snap = PanelState.MAX;
-                        ///Snap to position
-                        _snapToPosition(snap);
-                        return;
-                      }
 
                       ///Determine to which SnapPosition the widget should snap
 
-                      // final _percentageMax = percentageFromValueInRange(
-                      //     min: widget.minHeight,
-                      //     max: widget.maxHeight,
-                      //     value: _dragHeight);
+                      final _percentageMax = percentageFromValueInRange(
+                          min: widget.minHeight,
+                          max: widget.maxHeight,
+                          value: _dragHeight);
 
                       ///Started from expanded state
-                      // if (_startHeight > widget.minHeight) {
-                      //   if (_percentageMax > 1 - snapPercentage)
-                      //     snap = PanelState.MAX;
-                      // }
+                      if (_startHeight > widget.minHeight) {
+                        if (_percentageMax > 1 - snapPercentage)
+                          snap = PanelState.MAX;
+                      }
 
                       ///Started from minified state
                       else {
-                        // if (_percentageMax > snapPercentage)
-                        //   snap = PanelState.MAX;
-                        // else
+                        if (_percentageMax > snapPercentage)
+                          snap = PanelState.MAX;
+                        else
 
                         ///DismissedPercentage > 0.2 -> dismiss
                         if (onDismissed != null &&
